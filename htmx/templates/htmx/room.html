@@ -1,0 +1,19 @@
+<!-- htmx/templates/htmx/room.html -->
+<div>
+    <span id="room-name">{{room_name}}</span>
+    <textarea id="chat-log" cols="100" rows="20"></textarea><br>
+    <script>
+    htmx.defineExtension('my-ext', {
+      transformResponse : function(text, xhr, elt) {
+        const data = JSON.parse(text);
+        document.querySelector('#chat-log').value += (data.message + '\n');
+        return text;
+      }
+    })
+    </script>
+    <div hx-ws="{{room_url}}" hx-ext="my-ext">
+      <form hx-ws="send">
+        <input name="message">
+      </form>
+    </div>
+</div>
